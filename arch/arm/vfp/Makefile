@@ -7,7 +7,11 @@
 # ccflags-y := -DDEBUG
 # asflags-y := -DDEBUG
 
+<<<<<<< HEAD
 KBUILD_AFLAGS	:=$(KBUILD_AFLAGS:-msoft-float=-Wa,-mfpu=softvfp+vfp -mfloat-abi=soft)
+=======
+KBUILD_AFLAGS	:=$(KBUILD_AFLAGS:-mhard-float=-Wa,-mfpu=neon-vfpv4 -mfloat-abi=hard)
+>>>>>>> 704bb11... gpu: optimizations
 LDFLAGS		+=--no-warn-mismatch
 
 obj-y			+= vfp.o
