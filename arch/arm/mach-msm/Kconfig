@@ -1915,6 +1915,12 @@ config FORCE_FAST_CHARGE
 	  A simple sysfs interface to force adapters that
 	  are detected as USB to charge as AC (1A/h) or to set
 	  custom charging currents for AC and USB.
+	  
+config MSM_SLEEPER
+	bool "CPU hotplug driver"
+	default y
+	help
+	  CPU hotplug driver
 
 config CPU_VOLTAGE_TABLE
 	bool "Enable CPU Voltage Table via sysfs for adjustements"
