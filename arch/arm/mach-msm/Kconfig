@@ -1916,12 +1916,6 @@ config FORCE_FAST_CHARGE
 	  are detected as USB to charge as AC (1A/h) or to set
 	  custom charging currents for AC and USB.
 	  
-config MSM_SLEEPER
-	bool "CPU hotplug driver"
-	default y
-	help
-	  CPU hotplug driver
-
 config CPU_VOLTAGE_TABLE
 	bool "Enable CPU Voltage Table via sysfs for adjustements"
 	default n
@@ -3140,6 +3134,11 @@ config BRICKED_HOTPLUG
 	  This enables kernel based multi core control.
 	  (up/down hotplug based on load)
 
+config MSM_SLEEPER
+	bool "CPU hotplug driver"
+	default y
+	help
+	  CPU hotplug driver
 
 endif
 
