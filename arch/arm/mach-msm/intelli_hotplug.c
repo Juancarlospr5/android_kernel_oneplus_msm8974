@@ -26,6 +26,7 @@
 #include <linux/cpufreq.h>
 
 #define INTELLI_PLUG			"intelli_plug"
+#define HOTPLUG_ENABLED			1
 #define INTELLI_PLUG_MAJOR_VERSION	5
 #define INTELLI_PLUG_MINOR_VERSION	1
 
