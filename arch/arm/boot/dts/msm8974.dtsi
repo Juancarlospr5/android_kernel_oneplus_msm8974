@@ -2229,7 +2229,7 @@
 		qcom,freq-step = <2>;
 		qcom,freq-control-mask = <0xf>;
 		qcom,core-limit-temp = <75>;
-		qcom,core-temp-hysteresis = <09>;
+		qcom,core-temp-hysteresis = <9>;
 		qcom,core-control-mask = <0xe>;
 		qcom,hotplug-temp = <110>;
 		qcom,hotplug-temp-hysteresis = <20>;
