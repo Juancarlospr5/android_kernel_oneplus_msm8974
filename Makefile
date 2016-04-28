@@ -359,8 +359,6 @@ OPTIMIZATION_FLAGS = -marm -mcpu=cortex-a15 -mtune=cortex-a15 -mfpu=neon-vfpv4
 		     -fsingle-precision-constant -ftree-loop-im -ftree-loop-ivcanon -fgcse-las \
 		     -ftree-loop-linear -ftree-vectorize -frename-registers -fmodulo-sched \
 		     -funsafe-math-optimizations -fsanitize=leak -fforce-addr -fgcse-lm \
-		     --param 11-cache-size=16 --param 11-cache-line-size=16 \
-		     --param 12-cache-size=2048 \
 		     -fsingle-precision-constant -fsched-spec-load -fforce-addr -fgcse-lm
 CFLAGS_MODULE   = $(OPTIMIZATION_FLAGS) $(GRAPHITE)
 AFLAGS_MODULE   = $(OPTIMIZATION_FLAGS) $(GRAPHITE)
