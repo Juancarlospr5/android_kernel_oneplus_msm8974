@@ -24,17 +24,8 @@
 
 #include <soc/qcom/limiter.h>
 
-<<<<<<< HEAD
-#define MSM_LIMIT			"msm_limiter"
-#define LIMITER_ENABLED			1
-#define DEFAULT_SUSPEND_DEFER_TIME	10 
-#define DEFAULT_SUSPEND_FREQUENCY	960000
-#define DEFAULT_RESUME_FREQUENCY	2265600
-#define DEFAULT_MIN_FREQUENCY		268800
-=======
 #define MSM_CPUFREQ_LIMIT_MAJOR		3
 #define MSM_CPUFREQ_LIMIT_MINOR		6
->>>>>>> ff9695c... cpufreq: limiter: update driver to v3.6
 
 static unsigned int debug_mask = 0;
 
