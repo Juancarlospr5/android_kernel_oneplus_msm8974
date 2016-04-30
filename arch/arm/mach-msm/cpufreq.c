@@ -202,8 +202,23 @@ static int msm_cpufreq_init(struct cpufreq_policy *policy)
 		if (cpu_clk[cpu] == cpu_clk[policy->cpu])
 			cpumask_set_cpu(cpu, policy->cpus);
 
-	if (cpufreq_frequency_table_cpuinfo(policy, table))
+	if (cpufreq_frequency_table_cpuinfo(policy, table)) {
+#ifdef CONFIG_MSM_CPU_FREQ_SET_MIN_MAX
+		policy->cpuinfo.min_freq = CONFIG_MSM_CPU_FREQ_MIN;
+		policy->cpuinfo.max_freq = CONFIG_MSM_CPU_FREQ_MAX;
+#endif
 		pr_err("cpufreq: failed to get policy min/max\n");
+	}
+#ifdef CONFIG_MSM_CPU_FREQ_SET_MIN_MAX
+	policy->min = CONFIG_MSM_CPU_FREQ_MIN;
+	policy->max = CONFIG_MSM_CPU_FREQ_MAX;
+#else
+#ifdef CONFIG_ARCH_MSM8974
+	/* Predefine max/min frequencies used for device boot */
+	policy->max = 2265600;
+	policy->min = 268800;
+#endif
+#endif
 
 	cpu_work = &per_cpu(cpufreq_work, policy->cpu);
 	INIT_WORK(&cpu_work->work, set_cpu_work);
@@ -227,11 +242,21 @@ static int msm_cpufreq_init(struct cpufreq_policy *policy)
 			   table[index].index);
 	if (ret)
 		return ret;
+	/* Use user max frequency instead of max available frequency */
 	pr_debug("cpufreq: cpu%d init at %d switching to %d\n",
+#ifdef CONFIG_MSM_CPU_FREQ_SET_MIN_MAX
+			policy->cpu, cur_freq, policy->max);
+	policy->cur = policy->max;
+#else
 			policy->cpu, cur_freq, table[index].frequency);
 	policy->cur = table[index].frequency;
+#endif
 	cpufreq_frequency_table_get_attr(table, policy->cpu);
-
+#ifdef CONFIG_MSM_CPU_FREQ_SET_MIN_MAX
+	/* set safe default min and max speeds */
+	policy->max = CONFIG_MSM_CPU_FREQ_MAX;
+	policy->min = CONFIG_MSM_CPU_FREQ_MIN;
+#endif
 	return 0;
 }
 
@@ -311,11 +336,34 @@ static int msm_cpufreq_suspend(void)
 
 static int msm_cpufreq_resume(void)
 {
-	int cpu;
+	int cpu, ret;
+	struct cpufreq_policy policy;
 
 	for_each_possible_cpu(cpu) {
 		per_cpu(cpufreq_suspend, cpu).device_suspended = 0;
 	}
+
+	/*
+	 * Freq request might be rejected during suspend, resulting
+	 * in policy->cur violating min/max constraint.
+	 * Correct the frequency as soon as possible.
+	 */
+	get_online_cpus();
+	for_each_online_cpu(cpu) {
+		ret = cpufreq_get_policy(&policy, cpu);
+		if (ret)
+			continue;
+		if (policy.cur <= policy.max && policy.cur >= policy.min)
+			continue;
+		ret = cpufreq_update_policy(cpu);
+		if (ret)
+			pr_err("cpufreq: Current frequency violates policy min/max for CPU%d\n",
+			       cpu);
+		else
+			pr_debug("cpufreq: Frequency violation fixed for CPU%d\n",
+				cpu);
+	}
+	put_online_cpus();
 
 	return NOTIFY_DONE;
 }
@@ -389,6 +437,11 @@ static struct cpufreq_frequency_table *cpufreq_parse_dt(struct device *dev,
 		if (IS_ERR_VALUE(f))
 			break;
 		f /= 1000;
+
+                /*
+                 * override clk_round_rate calculated value for min freq
+                */
+		if (f < 268800 && f > data[i]) f = data[i];
 
 		/*
 		 * Check if this is the last feasible frequency in the table.
