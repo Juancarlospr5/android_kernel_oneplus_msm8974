@@ -40,11 +40,7 @@
    Any workload higher than this will be treated as a non-idle workload.
    Adreno idler will more actively try to ramp down the frequency
    if this is set to a higher value. */
-<<<<<<< HEAD
 static unsigned long idleworkload = 6000;
-=======
-static unsigned long idleworkload = 5000;
->>>>>>> 2c1172e... devfreq: adreno_idler: Clean up & Use state notifier helper
 module_param_named(adreno_idler_idleworkload, idleworkload, ulong, 0664);
 
 /* Number of events to wait before ramping down the frequency.
@@ -53,7 +49,6 @@ module_param_named(adreno_idler_idleworkload, idleworkload, ulong, 0664);
    This implementation is to prevent micro-lags on scrolling or playing games.
    Adreno idler will more actively try to ramp down the frequency
    if this is set to a lower value. */
-<<<<<<< HEAD
 static unsigned int idlewait = 10;
 module_param_named(adreno_idler_idlewait, idlewait, uint, 0664);
 
@@ -63,17 +58,6 @@ module_param_named(adreno_idler_downdifferential, downdifferential, uint, 0664);
 
 /* Master switch to activate the whole routine */
 bool adreno_idler_active = true;
-=======
-static unsigned int idlewait = 20;
-module_param_named(adreno_idler_idlewait, idlewait, uint, 0664);
-
-/* Taken from ondemand */
-static unsigned int downdifferential = 20;
-module_param_named(adreno_idler_downdifferential, downdifferential, uint, 0664);
-
-/* Master switch to activate the whole routine */
-bool adreno_idler_active;
->>>>>>> 2c1172e... devfreq: adreno_idler: Clean up & Use state notifier helper
 module_param_named(adreno_idler_active, adreno_idler_active, bool, 0664);
 
 static unsigned int idlecount = 0;
