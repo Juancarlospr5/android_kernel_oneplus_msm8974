@@ -22,21 +22,18 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 					u32 *flag)
 {
 	struct devfreq_dev_status stat;
-	int err = df->profile->get_dev_status(df->dev.parent, &stat);
+	int err;
 	unsigned long long a, b;
 	struct devfreq_simple_ondemand_data *data = df->data;
 	unsigned long max = (df->max_freq) ? df->max_freq : UINT_MAX;
 	unsigned long min = (df->min_freq) ? df->min_freq : 0;
 
-<<<<<<< HEAD
-=======
 	if (!data)
 		return -EINVAL;
 
 	stat.private_data = NULL;
 
 	err = df->profile->get_dev_status(df->dev.parent, &stat);
->>>>>>> 3801d36... PM: devfreq: Allow userspace configuration of simple_ondemand
 	if (err)
 		return err;
 
