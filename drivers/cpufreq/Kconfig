@@ -179,6 +179,12 @@ config CPU_FREQ_DEFAULT_GOV_PEGASUSQ
 	select CPU_FREQ_GOV_PEGASUSQ
 	help
 	Use the CPUFreq governor 'pegasusq' as default.
+	
+config CPU_FREQ_DEFAULT_GOV_IMPULSE
+	bool "impulse"
+	select CPU_FREQ_GOV_IMPULSE
+	help
+	  Use the CPUFreq governor 'interactive' as default.	
 
 
 config CPU_FREQ_DEFAULT_GOV_ONDEMANDPLUS
