@@ -1711,6 +1711,11 @@ out:
 			atomic_notifier_call_chain(&migration_notifier_head,
 					   0, (void *)&mnd);
 	}
+
+	if (notify)
+		atomic_notifier_call_chain(&migration_notifier_head,
+					   cpu, (void *)src_cpu);
+
 	return success;
 }
 
@@ -5444,19 +5449,9 @@ done:
 fail:
 	double_rq_unlock(rq_src, rq_dest);
 	raw_spin_unlock(&p->pi_lock);
-	if (moved && task_notify_on_migrate(p)) {
-		struct migration_notify_data mnd;
-
-		mnd.src_cpu = src_cpu;
-		mnd.dest_cpu = dest_cpu;
-		if (sysctl_sched_ravg_window)
-			mnd.load = div64_u64((u64)p->se.ravg.demand * 100,
-				(u64)(sysctl_sched_ravg_window));
-		else
-			mnd.load = 0;
+	if (moved && task_notify_on_migrate(p))
 		atomic_notifier_call_chain(&migration_notifier_head,
-					   0, (void *)&mnd);
-	}
+					   dest_cpu, (void *)src_cpu);
 	return ret;
 }
 
