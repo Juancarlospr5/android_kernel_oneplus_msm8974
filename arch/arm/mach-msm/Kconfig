@@ -3105,7 +3105,7 @@ config CHARGE_LEVEL
 	bool "Charge level interface"
 	default y
 	help
-	  Allows configuration of ac and usb charging levels
+	  Allows configuration of ac and usb charging levels		 
 
 config HAS_MACH_MEMUTILS
 	default n
